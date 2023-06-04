@@ -53,7 +53,7 @@ export default function Home() {
     return (
       <div className={styles.container}>
         <Head>
-          <title>Ticket NFT</title>
+          <title>Quick Swap</title>
         </Head>
         <div className={styles.connectWallet}>
           <div className={styles.wallet}>
