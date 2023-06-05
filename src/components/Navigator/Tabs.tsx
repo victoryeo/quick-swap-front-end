@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 import { withRouter } from "next/router"
 import { TabHead, TabContainer, TabBody, Tab } from "../../styles/Tab.module.css"
-import Besu from "../Besu/Besu"
+import Gnosis from "../Gnosis/Gnosis"
 import Goerli from "../Goerli/Goerli"
 
 const Tabs = ({ router }) => {
@@ -17,7 +17,7 @@ const Tabs = ({ router }) => {
       <TabHead>
         <Tab selected={isTabOne}>
           <Link href={{ pathname: "/", query: { tab: "1" } }}>
-            <a>Besu</a>
+            <a>Gnosis</a>
           </Link>
         </Tab>
         <Tab selected={isTabTwo}>
@@ -27,7 +27,7 @@ const Tabs = ({ router }) => {
         </Tab>
       </TabHead>
       <TabBody>
-        {isTabOne && <React.Fragment><Besu/></React.Fragment>}
+        {isTabOne && <React.Fragment><Gnosis/></React.Fragment>}
         {isTabTwo && <React.Fragment><Goerli/></React.Fragment>}
       </TabBody>
     </TabContainer>
