@@ -13,7 +13,7 @@ export default function Goerli() {
   const userAddress = useSelector(selectUserAddress);
 
   const handleGriefingLock = async () => {
-    console.log(signer.address)
+    console.log(signer)
     console.log(userAddress)
     const glockContractFactory = new ethers.ContractFactory(
       griefinglock_abi, griefinglock_bytecode, signer);
@@ -22,7 +22,8 @@ export default function Goerli() {
     args[1] = 200             // time gap
     const contract = await glockContractFactory.deploy(...args);
     await contract.deployed();
-    console.log(contract.address)
+    console.log(contract.address)   //tested and working
+          //0x86679C11F03c249fe43b6b5c817128eC087BdBD1
   };
 
   const handlePrincipalLock = () => {
