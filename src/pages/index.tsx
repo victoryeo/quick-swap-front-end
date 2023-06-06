@@ -26,6 +26,7 @@ export default function Home() {
     console.log("account", wallet?.accounts[0])
     if (wallet?.provider) {
       const signer = ethersProvider.getSigner()
+      console.log("signer", signer.address)
       dispatch(setUserAddress(wallet.accounts[0].address))
       dispatch(rootActions.setWeb3Provider(ethersProvider))
       dispatch(rootActions.setReduxSigner(signer))
