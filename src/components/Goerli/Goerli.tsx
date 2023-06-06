@@ -1,10 +1,28 @@
 import styles from "./Goerli.module.css";
 import Image from 'next/image';
+import { useSelector } from "react-redux";
+import { ethers } from 'ethers';
 import goerli from '../../../public/eth.png';
+import { griefinglock_abi } from "@/config/abi/GriefingLock";
+import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
+import { selectSigner } from "../../redux/selectors";
+import { selectUserAddress } from "../../redux/selectors/user";
 
 export default function Goerli() {
-  const handleGriefingLock = () => {
+  const signer = useSelector(selectSigner);
+  const userAddress = useSelector(selectUserAddress);
 
+  const handleGriefingLock = async () => {
+    console.log(signer.address)
+    console.log(userAddress)
+    const glockContractFactory = new ethers.ContractFactory(
+      griefinglock_abi, griefinglock_bytecode, signer);
+    let args: any[] = []
+    args[0] = userAddress     // quick swap recipient address
+    args[1] = 200             // time gap
+    const contract = await glockContractFactory.deploy(...args);
+    await contract.deployed();
+    console.log(contract.address)
   };
 
   const handlePrincipalLock = () => {
