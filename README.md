@@ -13,3 +13,6 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Result
+the griefing lock contract deployment is tested on goerli testnet.
