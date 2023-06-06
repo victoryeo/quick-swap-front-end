@@ -3,6 +3,13 @@ import Image from 'next/image';
 import gnosis from '../../../public/gnosis.png';
 
 export default function Gnosis() {
+  const handleGriefingLock = () => {
+
+  };
+
+  const handlePrincipalLock = () => {
+
+  };
   return(
     <div className={styles.container}>
       <div className='flex flex-col items-center pt-4 bg-[#1c589d] max-h-full w-full mb-5'>
@@ -17,6 +24,14 @@ export default function Gnosis() {
           <h2 className="text-3xl font-bold mb-5 text-[#ada6c1]">
             Gnosis Contract
           </h2>
+          <button className={styles.griefinglock} onClick={handleGriefingLock}>
+            Deploy Griefing Lock
+          </button>
+      </div>
+      <div>
+          <button className={styles.principallock} onClick={handlePrincipalLock}>
+            Deploy Principal Lock
+          </button>
       </div>
     </div>
   )
