@@ -73,6 +73,14 @@ export default function Home() {
         <Layout>
           <Tabs />
         </Layout>
+        <ButtonEx
+          onClick={() => {
+            alert("You must deploy griefing and principal lock on both chains before swapping assets")
+          }}
+          title="Swap"
+          id="WalletSwap"
+          bsPrefix={styles.walletBtnSwap}
+        ></ButtonEx>
       </div>
     );
   }
