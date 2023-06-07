@@ -61,7 +61,7 @@ export default function Goerli() {
     const setChain = async () => {
       if (signer != null) {
         console.log(signer.provider)
-        const { chainId } = await signer.provider.getNetwork()
+        const chainId = await signer.provider.getNetwork()
         console.log("chainId", chainId)
         if (chainId != 5) {
           try {
@@ -70,7 +70,7 @@ export default function Goerli() {
                 method:'wallet_switchEthereumChain',
                 params: [{chainId: "0x5"}]
             });
-            console.log(`switched to chainid : ${chainId} succesfully`);
+            console.log(`switched to chainid : 0x5 succesfully`);
           } catch(err) {
             console.log(`error occured while switching chain to chainId 5, err: ${err}`);
           }
