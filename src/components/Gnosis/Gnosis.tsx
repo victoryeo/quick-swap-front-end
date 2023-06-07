@@ -41,8 +41,17 @@ export default function Gnosis() {
     setGriefingLockDeployed(true);
   };
 
-  const handlePrincipalLock = () => {
+  const handlePrincipalLock = async () => {
+    console.log(signer)
+    console.log(userAddress)
+    console.log(glockContractS)
 
+    let exchangeAmount = 2
+    const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
+    const res = await plockContract.wait()
+    let principalLockAddress = res.events[1]?.args.principalAddress;
+    console.log(plockContract) 
+    console.log(principalLockAddress)
   };
 
   useEffect(() => {
