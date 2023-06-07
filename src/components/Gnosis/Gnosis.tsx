@@ -31,6 +31,31 @@ export default function Gnosis() {
   const handlePrincipalLock = () => {
 
   };
+
+  useEffect(() => {
+    const setChain = async () => {
+      if (signer != null) {
+        console.log(signer.provider)
+        const chainId = await signer.provider.getNetwork()
+        console.log("chainId", chainId)
+        if (chainId != 100) {
+          try {
+            const { ethereum } = window;
+            await ethereum.request({
+                method:'wallet_switchEthereumChain',
+                params: [{chainId: "0x64"}]
+            });
+            console.log(`switched to chainid : 0x64 succesfully`);
+          } catch(err) {
+            console.log(`error occured while switching chain to chainId 100, err: ${err}`);
+            console.log(err)
+          }
+        }
+      }
+    }
+    setChain();
+  }, []);
+
   return(
     <div className={styles.container}>
       <div className='flex flex-col items-center pt-4 bg-[#1c589d] max-h-full w-full mb-5'>
