@@ -17,6 +17,7 @@ export default function Goerli() {
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
   let glockContract: ethers.Contract;
+  const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
 
   const handleGriefingLock = async () => {
     console.log(signer)
@@ -32,11 +33,13 @@ export default function Goerli() {
       await glockContract.deployed();
       console.log(glockContract.address)   //tested and working
             //0x86679C11F03c249fe43b6b5c817128eC087BdBD1
+      setGlockContractS(glockContract)
     } else {
       console.log("griefing contract is deployed")
       glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[5], 
         griefinglock_abi, signer)
       console.log(glockContract.address)
+      setGlockContractS(glockContract)
     }
     setGriefingLockDeployed(true);      
   };
@@ -44,9 +47,14 @@ export default function Goerli() {
   const handlePrincipalLock = async () => {
     console.log(signer)
     console.log(userAddress)
-    //const plockContractFactory = new ethers.ContractFactory(principallock_abi, principallock_bytecode, signer);
+    console.log(glockContractS)
+
     let exchangeAmount = 2
-    await glockContract.deployPrincipalLock({value:exchangeAmount})
+    const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
+    const res = await plockContract.wait()
+    let principalLockAddress = res.events[1]?.args.principalAddress;
+    console.log(plockContract) 
+    console.log(principalLockAddress)
   };
 
   useEffect(() => {
