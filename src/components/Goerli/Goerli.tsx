@@ -6,6 +6,9 @@ import { ethers } from 'ethers';
 import goerli from '../../../public/eth.png';
 import { griefinglock_abi } from "@/config/abi/GriefingLock";
 import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
+import { principallock_abi } from "@/config/abi/PrincipalLock";
+import { principallock_bytecode } from "@/config/bytecode/PrincipalLock";
+import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
 
@@ -13,24 +16,37 @@ export default function Goerli() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
+  let glockContract: ethers.Contract;
 
   const handleGriefingLock = async () => {
     console.log(signer)
     console.log(userAddress)
-    const glockContractFactory = new ethers.ContractFactory(
-      griefinglock_abi, griefinglock_bytecode, signer);
-    let args: any[] = []
-    args[0] = userAddress     // quick swap recipient address
-    args[1] = 200             // time gap
-    const contract = await glockContractFactory.deploy(...args);
-    await contract.deployed();
-    console.log(contract.address)   //tested and working
-          //0x86679C11F03c249fe43b6b5c817128eC087BdBD1
+    if (contracts.GRIEFING_LOCK[5] === '') {
+      console.log("deploying griefing contract")
+      const glockContractFactory = new ethers.ContractFactory(
+        griefinglock_abi, griefinglock_bytecode, signer);
+      let args: any[] = []
+      args[0] = userAddress     // quick swap recipient address
+      args[1] = 200             // time gap
+      glockContract = await glockContractFactory.deploy(...args);
+      await glockContract.deployed();
+      console.log(glockContract.address)   //tested and working
+            //0x86679C11F03c249fe43b6b5c817128eC087BdBD1
+    } else {
+      console.log("griefing contract is deployed")
+      glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[5], 
+        griefinglock_abi, signer)
+      console.log(glockContract.address)
+    }
     setGriefingLockDeployed(true);      
   };
 
   const handlePrincipalLock = () => {
-
+    console.log(signer)
+    console.log(userAddress)
+    const plockContractFactory = new ethers.ContractFactory(
+      principallock_abi, principallock_bytecode, signer);
+    glockContract.deployPrincipalLock()
   };
 
   return(
