@@ -14,6 +14,7 @@ import { selectUserAddress } from "../../redux/selectors/user";
 
 export default function Goerli() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
+  const [goerliPrincipalLockDeployed, setGoerliPrincipalLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
   let glockContract: ethers.Contract;
