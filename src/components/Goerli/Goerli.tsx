@@ -49,6 +49,29 @@ export default function Goerli() {
     await glockContract.deployPrincipalLock({value:exchangeAmount})
   };
 
+  useEffect(() => {
+    const setChain = async () => {
+      if (signer != null) {
+        console.log(signer.provider)
+        const { chainId } = await signer.provider.getNetwork()
+        console.log("chainId", chainId)
+        if (chainId != 5) {
+          try {
+            const { ethereum } = window;
+            await ethereum.request({
+                method:'wallet_switchEthereumChain',
+                params: [{chainId: "0x5"}]
+            });
+            console.log(`switched to chainid : ${chainId} succesfully`);
+          } catch(err) {
+            console.log(`error occured while switching chain to chainId 5, err: ${err}`);
+          }
+        }
+      }
+    }
+    setChain();
+  }, []);
+
   return(
     <div className={styles.container}>
       <div className='flex flex-col items-center pt-4 bg-[#1c589d] max-h-full w-full mb-5'>
