@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import styles from "./Goerli.module.css";
 import Image from 'next/image';
 import { useSelector } from "react-redux";
@@ -9,6 +10,7 @@ import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
 
 export default function Goerli() {
+  const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
 
@@ -24,6 +26,7 @@ export default function Goerli() {
     await contract.deployed();
     console.log(contract.address)   //tested and working
           //0x86679C11F03c249fe43b6b5c817128eC087BdBD1
+    setGriefingLockDeployed(true);      
   };
 
   const handlePrincipalLock = () => {
@@ -49,8 +52,9 @@ export default function Goerli() {
           </button>
       </div>
       <div>
-          <button className={styles.principallock} onClick={handlePrincipalLock}>
-            Deploy Principal Lock
+          <button className={griefingLockDeployed === false ? styles.btnDisabled :styles.principallock}
+            disabled={!griefingLockDeployed}
+            onClick={handlePrincipalLock}>            Deploy Principal Lock
           </button>
       </div>
     </div>
