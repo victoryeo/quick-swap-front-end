@@ -43,6 +43,10 @@ export default function Home() {
     }
   }, [wallet])
 
+  const handleSwap = async () => {
+    alert("You must deploy griefing and principal lock on both chains before swapping assets")    
+  }
+
   // create an ethers provider
   let ethersProvider: any
 
@@ -74,9 +78,7 @@ export default function Home() {
           <Tabs />
         </Layout>
         <ButtonEx
-          onClick={() => {
-            alert("You must deploy griefing and principal lock on both chains before swapping assets")
-          }}
+          onClick={handleSwap}
           title="Swap"
           id="WalletSwap"
           bsPrefix={styles.walletBtnSwap}
