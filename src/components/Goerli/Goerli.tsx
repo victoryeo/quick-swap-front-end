@@ -101,7 +101,8 @@ export default function Goerli() {
       <div>
           <button className={griefingLockDeployed === false ? styles.btnDisabled :styles.principallock}
             disabled={!griefingLockDeployed}
-            onClick={handlePrincipalLock}>            Deploy Principal Lock
+            onClick={handlePrincipalLock}>            
+            Deploy Principal Lock
           </button>
       </div>
     </div>
