@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import gnosis from '../../../public/gnosis.png';
 import { griefinglock_abi } from "@/config/abi/GriefingLock";
 import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
+import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
 
@@ -13,20 +14,30 @@ export default function Gnosis() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
+  let glockContract: ethers.Contract;
   const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
 
   const handleGriefingLock = async () => {
     console.log(signer)
     console.log(userAddress)
-    const glockContractFactory = new ethers.ContractFactory(
-      griefinglock_abi, griefinglock_bytecode, signer);
-    let args: any[] = []
-    args[0] = userAddress     // quick swap recipient address
-    args[1] = 200             // time gap
-    const glockContract = await glockContractFactory.deploy(...args);
-    await glockContract.deployed();
-    console.log(glockContract.address)
-    setGlockContractS(glockContract)
+    if (contracts.GRIEFING_LOCK[100] === '') {
+      console.log("deploying griefing contract")
+      const glockContractFactory = new ethers.ContractFactory(
+        griefinglock_abi, griefinglock_bytecode, signer);
+      let args: any[] = []
+      args[0] = userAddress     // quick swap recipient address
+      args[1] = 200             // time gap
+      glockContract = await glockContractFactory.deploy(...args);
+      await glockContract.deployed();
+      console.log(glockContract.address)
+      setGlockContractS(glockContract)
+    } else {
+      console.log("griefing contract is deployed")
+      glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[100], 
+        griefinglock_abi, signer)
+      console.log(glockContract.address)
+      setGlockContractS(glockContract)
+    }
     setGriefingLockDeployed(true);
   };
 
