@@ -41,12 +41,12 @@ export default function Goerli() {
     setGriefingLockDeployed(true);      
   };
 
-  const handlePrincipalLock = () => {
+  const handlePrincipalLock = async () => {
     console.log(signer)
     console.log(userAddress)
-    const plockContractFactory = new ethers.ContractFactory(
-      principallock_abi, principallock_bytecode, signer);
-    glockContract.deployPrincipalLock()
+    //const plockContractFactory = new ethers.ContractFactory(principallock_abi, principallock_bytecode, signer);
+    let exchangeAmount = 2
+    await glockContract.deployPrincipalLock({value:exchangeAmount})
   };
 
   return(
