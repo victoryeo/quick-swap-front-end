@@ -13,6 +13,7 @@ export default function Gnosis() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
+  const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
 
   const handleGriefingLock = async () => {
     console.log(signer)
@@ -22,9 +23,10 @@ export default function Gnosis() {
     let args: any[] = []
     args[0] = userAddress     // quick swap recipient address
     args[1] = 200             // time gap
-    const contract = await glockContractFactory.deploy(...args);
-    await contract.deployed();
-    console.log(contract.address)
+    const glockContract = await glockContractFactory.deploy(...args);
+    await glockContract.deployed();
+    console.log(glockContract.address)
+    setGlockContractS(glockContract)
     setGriefingLockDeployed(true);
   };
 
