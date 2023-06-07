@@ -8,7 +8,7 @@ const contracts = {
   },
   PRINCIPAL_LOCK: {
     5: '0xFF6c351434e8F1e317caB575B13661cAAe219690',
-    100: '',
+    100: '0x1174C0C205bCD2F330ff60b7eCd0C7D7Db16Eb82',
   },
   PRINCIPAL_LOCK_TTOKEN: {
     5: '',
