@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import styles from "./Gnosis.module.css";
 import Image from 'next/image';
 import { useSelector } from "react-redux";
@@ -9,6 +10,7 @@ import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
 
 export default function Gnosis() {
+  const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
 
@@ -22,7 +24,8 @@ export default function Gnosis() {
     args[1] = 200             // time gap
     const contract = await glockContractFactory.deploy(...args);
     await contract.deployed();
-    console.log(contract.address) 
+    console.log(contract.address)
+    setGriefingLockDeployed(true);
   };
 
   const handlePrincipalLock = () => {
@@ -47,7 +50,9 @@ export default function Gnosis() {
           </button>
       </div>
       <div>
-          <button className={styles.principallock} onClick={handlePrincipalLock}>
+          <button className={griefingLockDeployed === false ? styles.btnDisabled :styles.principallock}
+            disabled={!griefingLockDeployed}
+            onClick={handlePrincipalLock}>
             Deploy Principal Lock
           </button>
       </div>
