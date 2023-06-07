@@ -1,7 +1,7 @@
 const contracts = {
   GRIEFING_LOCK: {
     5: '0xfD4945168e3d6Ea8DB653d22556Da6e54f19AC36',
-    100: '',
+    100: '0xaEF1CA2d215AF72F4AA574629e0629aAaDe1349c',
   },
   GRIEFING_LOCK_TTOKEN: {
     5: '',
