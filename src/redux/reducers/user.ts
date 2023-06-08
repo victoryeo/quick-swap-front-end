@@ -43,5 +43,5 @@ export const userSlice = createSlice({
   }
 })
 
-export const { setUserAddress } = userSlice.actions
+export const { setUserAddress, setGoerliPrincipalLock, setGnosisPrincipalLock } = userSlice.actions
 export default userSlice.reducer
