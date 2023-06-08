@@ -30,7 +30,7 @@ export default function Goerli() {
       const glockContractFactory = new ethers.ContractFactory(
         griefinglock_abi, griefinglock_bytecode, signer);
       let args: any[] = []
-      args[0] = userAddress     // quick swap recipient address
+      args[0] = userAddress     // quick swap recipient address, TBC
       args[1] = 200             // time gap
       glockContract = await glockContractFactory.deploy(...args);
       await glockContract.deployed();
@@ -65,7 +65,7 @@ export default function Goerli() {
       const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], 
         principallock_abi, signer)
       console.log(plockContract.address)
-      await plockContract.funding(exchangeAmount);
+      //await plockContract.funding(exchangeAmount);
     }
     dispatch(setGoerliPrincipalLock(true));
   };

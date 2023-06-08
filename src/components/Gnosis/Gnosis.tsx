@@ -29,7 +29,7 @@ export default function Gnosis() {
       const glockContractFactory = new ethers.ContractFactory(
         griefinglock_abi, griefinglock_bytecode, signer);
       let args: any[] = []
-      args[0] = userAddress     // quick swap recipient address
+      args[0] = userAddress     // quick swap recipient address, TBC
       args[1] = 200             // time gap
       glockContract = await glockContractFactory.deploy(...args);
       await glockContract.deployed();
