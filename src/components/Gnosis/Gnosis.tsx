@@ -89,7 +89,7 @@ export default function Gnosis() {
         }
       }
     }
-    setChain();
+    setChain();   //switch the blockchain
   }, []);
 
   return(

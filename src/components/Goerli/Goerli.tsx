@@ -90,7 +90,7 @@ export default function Goerli() {
         }
       }
     }
-    setChain();
+    setChain(); //switch the blockchain
   }, []);
 
   return(
