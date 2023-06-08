@@ -10,6 +10,9 @@ import { rootActions } from "../redux/reducers";
 import Tabs from "../components/Navigator/Tabs"
 import Layout from "../components/Navigator/Layout"
 import { selectGnosisPlock, selectGoerliPlock } from "../redux/selectors/user";
+import { principallock_abi } from "@/config/abi/PrincipalLock";
+import { selectSigner } from "../redux/selectors";
+import contracts from '../config/constants/contracts'
 
 interface Account {
   address: string;
@@ -18,6 +21,7 @@ interface Account {
 
 export default function Home() {
   const dispatch = useDispatch()
+  const signer = useSelector(selectSigner);
   const gnosisPlock = useSelector(selectGnosisPlock);
   const goerliPlock = useSelector(selectGoerliPlock);
 
@@ -49,6 +53,20 @@ export default function Home() {
     console.log(goerliPlock, gnosisPlock)
     if (goerliPlock && gnosisPlock) {
       alert("Swap starts")
+
+      const { chainId } = await signer.provider.getNetwork()
+      console.log("chainId", chainId)
+      if (chainId === 5) {
+        console.log("withdraw from goerli")
+        const plockContractGoerli = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], principallock_abi, signer)
+        const plockContractGoerliUser = plockContractGoerli.connect(wallet!.accounts[0].address)
+        await plockContractGoerliUser.withdraw();
+      } else {
+        console.log("withdraw from gnosis")
+        const plockContractGnosis = new ethers.Contract(contracts.PRINCIPAL_LOCK[100], principallock_abi, signer)
+        const plockContractGnosisUser = plockContractGnosis.connect(wallet!.accounts[0].address)
+        await plockContractGnosisUser.withdraw();
+      }
     } else {
       alert("You must deploy griefing and principal lock on both chains before swapping assets")    
     }
