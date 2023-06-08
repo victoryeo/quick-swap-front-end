@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 import { useDispatch, useSelector } from "react-redux"; 
 import styles from '../styles/Home.module.css';
 import { ButtonEx } from "../components/ButtonEx/ButtonEx";
-import { setUserAddress } from '../redux/reducers/user';
+import { setUserAddress, setGnosisUserAddress, setGoerliUserAddress } from '../redux/reducers/user';
 import { rootActions } from "../redux/reducers";
 import Tabs from "../components/Navigator/Tabs"
 import Layout from "../components/Navigator/Layout"
@@ -29,6 +29,15 @@ export default function Home() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
   
   useEffect(() => {
+    const setChain = async () => {
+      const { chainId } = await signer.provider.getNetwork()
+      if (chainId === 5) {
+        dispatch(setGoerliUserAddress(wallet?.accounts[0].address))
+      }
+      if (chainId === 100) {
+        dispatch(setGnosisUserAddress(wallet?.accounts[0].address))
+      }
+    }
     console.log("account", wallet?.accounts[0])
     if (wallet?.provider) {
       const signer = ethersProvider.getSigner()
@@ -36,6 +45,7 @@ export default function Home() {
       dispatch(setUserAddress(wallet.accounts[0].address))
       dispatch(rootActions.setWeb3Provider(ethersProvider))
       dispatch(rootActions.setReduxSigner(signer))
+      setChain();
       setAccount({
         address: wallet.accounts[0].address,
         balance: wallet.accounts[0].balance
@@ -53,19 +63,20 @@ export default function Home() {
     console.log(goerliPlock, gnosisPlock)
     if (goerliPlock && gnosisPlock) {
       alert("Swap starts")
-
+      console.log("signer", signer)
+      console.log(wallet!.accounts[0].address)
       const { chainId } = await signer.provider.getNetwork()
       console.log("chainId", chainId)
       if (chainId === 5) {
         console.log("withdraw from goerli")
         const plockContractGoerli = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], principallock_abi, signer)
-        const plockContractGoerliUser = plockContractGoerli.connect(wallet!.accounts[0].address)
-        await plockContractGoerliUser.withdraw();
+        //const plockContractGoerliUser = plockContractGoerli.connect(wallet!.accounts[0].address)
+        await plockContractGoerli.withdraw();
       } else {
         console.log("withdraw from gnosis")
         const plockContractGnosis = new ethers.Contract(contracts.PRINCIPAL_LOCK[100], principallock_abi, signer)
-        const plockContractGnosisUser = plockContractGnosis.connect(wallet!.accounts[0].address)
-        await plockContractGnosisUser.withdraw();
+        //const plockContractGnosisUser = plockContractGnosis.connect(wallet!.accounts[0].address)
+        await plockContractGnosis.withdraw();
       }
     } else {
       alert("You must deploy griefing and principal lock on both chains before swapping assets")    
