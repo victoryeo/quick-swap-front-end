@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Gnosis.module.css";
 import Image from 'next/image';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ethers } from 'ethers';
 import gnosis from '../../../public/gnosis.png';
 import { griefinglock_abi } from "@/config/abi/GriefingLock";
@@ -9,6 +9,7 @@ import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
 import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
+import { setGnosisPrincipalLock } from '../../redux/reducers/user';
 
 export default function Gnosis() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
@@ -17,6 +18,7 @@ export default function Gnosis() {
   const userAddress = useSelector(selectUserAddress);
   let glockContract: ethers.Contract;
   const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
+  const dispatch = useDispatch()
 
   const handleGriefingLock = async () => {
     console.log(signer)
@@ -53,6 +55,7 @@ export default function Gnosis() {
     let principalLockAddress = res.events[1]?.args.principalAddress;
     console.log(plockContract) 
     console.log(principalLockAddress)
+    dispatch(setGnosisPrincipalLock(true));
   };
 
   useEffect(() => {

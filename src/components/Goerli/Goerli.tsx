@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Goerli.module.css";
 import Image from 'next/image';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ethers } from 'ethers';
 import goerli from '../../../public/eth.png';
 import { griefinglock_abi } from "@/config/abi/GriefingLock";
@@ -11,6 +11,7 @@ import { principallock_bytecode } from "@/config/bytecode/PrincipalLock";
 import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
+import { setGoerliPrincipalLock } from '../../redux/reducers/user';
 
 export default function Goerli() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
@@ -19,6 +20,7 @@ export default function Goerli() {
   const userAddress = useSelector(selectUserAddress);
   let glockContract: ethers.Contract;
   const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
+  const dispatch = useDispatch()
 
   const handleGriefingLock = async () => {
     console.log(signer)
@@ -56,6 +58,7 @@ export default function Goerli() {
     let principalLockAddress = res.events[1]?.args.principalAddress;
     console.log(plockContract) 
     console.log(principalLockAddress)
+    dispatch(setGoerliPrincipalLock(true));
   };
 
   useEffect(() => {
