@@ -9,7 +9,7 @@ import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
 import { principallock_abi } from "@/config/abi/PrincipalLock";
 import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
-import { selectUserAddress } from "../../redux/selectors/user";
+import { selectUserAddress, selectGoerliUserAddress } from "../../redux/selectors/user";
 import { setGnosisPrincipalLock } from '../../redux/reducers/user';
 
 export default function Gnosis() {
@@ -17,19 +17,20 @@ export default function Gnosis() {
   const [gnosisPrincipalLockDeployed, setGnosisPrincipalLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
+  const goerliUserAddress = useSelector(selectGoerliUserAddress);
   let glockContract: ethers.Contract;
   const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
   const dispatch = useDispatch()
 
   const handleGriefingLock = async () => {
     console.log(signer)
-    console.log(userAddress)
+    console.log(goerliUserAddress)
     if (contracts.GRIEFING_LOCK[100] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(
         griefinglock_abi, griefinglock_bytecode, signer);
       let args: any[] = []
-      args[0] = userAddress     // quick swap recipient address, TBC
+      args[0] = goerliUserAddress     // quick swap recipient address
       args[1] = 200             // time gap
       glockContract = await glockContractFactory.deploy(...args);
       await glockContract.deployed();
