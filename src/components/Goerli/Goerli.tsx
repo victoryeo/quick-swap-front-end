@@ -65,6 +65,7 @@ export default function Goerli() {
       const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], 
         principallock_abi, signer)
       console.log(plockContract.address)
+      plockContract.funding(exchangeAmount);
     }
     dispatch(setGoerliPrincipalLock(true));
   };

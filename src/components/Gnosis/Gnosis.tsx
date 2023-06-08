@@ -63,6 +63,7 @@ export default function Gnosis() {
       const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[100], 
         principallock_abi, signer)
       console.log(plockContract.address)
+      plockContract.funding(exchangeAmount)
     }
     dispatch(setGnosisPrincipalLock(true));
   };
