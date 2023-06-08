@@ -7,6 +7,8 @@ const hydrate = createAction<AppState>(HYDRATE);
 // Type for our state
 export interface UserAddress {
   userAddress: string;
+  goerliUserAddress: string;
+  gnosisUserAddress: string;
   goerliPlock: boolean;
   gnosisPlock: boolean;
 }
@@ -14,6 +16,8 @@ export interface UserAddress {
 // Initial state
 const initialState: UserAddress = {
   userAddress: "",
+  goerliUserAddress: "",
+  gnosisUserAddress: "",
   goerliPlock: false,
   gnosisPlock: false,
 };
@@ -24,6 +28,14 @@ export const userSlice = createSlice({
   reducers: {
     setUserAddress(state, action) {
       console.log('setUserAddress')
+      state.userAddress = action.payload;
+    },
+    setGoerliUserAddress(state, action) {
+      console.log('setGoerliUserAddress')
+      state.userAddress = action.payload;
+    },
+    setGnosisUserAddress(state, action) {
+      console.log('setGnosisUserAddress')
       state.userAddress = action.payload;
     },
     setGoerliPrincipalLock(state, action) {
@@ -45,5 +57,6 @@ export const userSlice = createSlice({
   }
 })
 
-export const { setUserAddress, setGoerliPrincipalLock, setGnosisPrincipalLock } = userSlice.actions
+export const { setUserAddress, setGoerliUserAddress, setGnosisUserAddress, 
+  setGoerliPrincipalLock, setGnosisPrincipalLock } = userSlice.actions
 export default userSlice.reducer
