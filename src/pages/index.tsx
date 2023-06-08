@@ -46,7 +46,8 @@ export default function Home() {
   }, [wallet])
 
   const handleSwap = async () => {
-    if (goerliPlock == true && gnosisPlock == true) {
+    console.log(goerliPlock, gnosisPlock)
+    if (goerliPlock && gnosisPlock) {
       alert("Swap starts")
     } else {
       alert("You must deploy griefing and principal lock on both chains before swapping assets")    

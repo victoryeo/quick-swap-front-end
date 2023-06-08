@@ -27,9 +27,11 @@ export const userSlice = createSlice({
       state.userAddress = action.payload;
     },
     setGoerliPrincipalLock(state, action) {
+      console.log('setGoerliPrincipalLock')
       state.goerliPlock = action.payload;
     },
     setGnosisPrincipalLock(state, action) {
+      console.log('setGnosisPrincipalLock')
       state.gnosisPlock = action.payload;
     }
   },
