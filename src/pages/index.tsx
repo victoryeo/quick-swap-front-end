@@ -2,14 +2,14 @@ import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useConnectWallet } from '@web3-onboard/react'
 import { ethers } from 'ethers'
-import { useDispatch } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux"; 
 import styles from '../styles/Home.module.css';
-
 import { ButtonEx } from "../components/ButtonEx/ButtonEx";
 import { setUserAddress } from '../redux/reducers/user';
 import { rootActions } from "../redux/reducers";
 import Tabs from "../components/Navigator/Tabs"
 import Layout from "../components/Navigator/Layout"
+import { selectGnosisPlock, selectGoerliPlock } from "../redux/selectors/user";
 
 interface Account {
   address: string;
@@ -18,6 +18,8 @@ interface Account {
 
 export default function Home() {
   const dispatch = useDispatch()
+  const gnosisPlock = useSelector(selectGnosisPlock);
+  const goerliPlock = useSelector(selectGoerliPlock);
 
   const [account, setAccount] = useState<Account | null>(null);
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
@@ -44,7 +46,11 @@ export default function Home() {
   }, [wallet])
 
   const handleSwap = async () => {
-    alert("You must deploy griefing and principal lock on both chains before swapping assets")    
+    if (goerliPlock == true && gnosisPlock == true) {
+      alert("Swap starts")
+    } else {
+      alert("You must deploy griefing and principal lock on both chains before swapping assets")    
+    }
   }
 
   // create an ethers provider
