@@ -32,11 +32,11 @@ export const userSlice = createSlice({
     },
     setGoerliUserAddress(state, action) {
       console.log('setGoerliUserAddress')
-      state.userAddress = action.payload;
+      state.goerliUserAddress = action.payload;
     },
     setGnosisUserAddress(state, action) {
       console.log('setGnosisUserAddress')
-      state.userAddress = action.payload;
+      state.gnosisUserAddress = action.payload;
     },
     setGoerliPrincipalLock(state, action) {
       console.log('setGoerliPrincipalLock')
