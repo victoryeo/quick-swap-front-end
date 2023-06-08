@@ -53,11 +53,19 @@ export default function Goerli() {
     console.log(glockContractS)
 
     let exchangeAmount = 2
-    const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
-    const res = await plockContract.wait()
-    let principalLockAddress = res.events[1]?.args.principalAddress;
-    console.log(plockContract) 
-    console.log(principalLockAddress)
+    if (contracts.PRINCIPAL_LOCK[5] === '') {
+      console.log("deploying principal contract")
+      const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
+      const res = await plockContract.wait()
+      let principalLockAddress = res.events[1]?.args.principalAddress;
+      console.log(plockContract) 
+      console.log(principalLockAddress)
+    } else {
+      console.log("principal contract is deployed")
+      const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], 
+        principallock_abi, signer)
+      console.log(plockContract.address)
+    }
     dispatch(setGoerliPrincipalLock(true));
   };
 

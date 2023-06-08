@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import gnosis from '../../../public/gnosis.png';
 import { griefinglock_abi } from "@/config/abi/GriefingLock";
 import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
+import { principallock_abi } from "@/config/abi/PrincipalLock";
 import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress } from "../../redux/selectors/user";
@@ -50,11 +51,19 @@ export default function Gnosis() {
     console.log(glockContractS)
 
     let exchangeAmount = 2
-    const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
-    const res = await plockContract.wait()
-    let principalLockAddress = res.events[1]?.args.principalAddress;
-    console.log(plockContract) 
-    console.log(principalLockAddress)
+    if (contracts.PRINCIPAL_LOCK[100] === '') {
+      console.log("deploying principal contract")
+      const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
+      const res = await plockContract.wait()
+      let principalLockAddress = res.events[1]?.args.principalAddress;
+      console.log(plockContract) 
+      console.log(principalLockAddress)
+    } else {
+      console.log("principal contract is deployed")
+      const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[100], 
+        principallock_abi, signer)
+      console.log(plockContract.address)
+    }
     dispatch(setGnosisPrincipalLock(true));
   };
 
