@@ -19,6 +19,10 @@ interface Account {
   balance: Record<string, string>;
 }
 
+const GOERLI_CHAIN = 5
+const GNOSIS_CHAIN = 100
+const CHIADO_CHAIN = 10200
+
 export default function Home() {
   const dispatch = useDispatch()
   const signer = useSelector(selectSigner);
@@ -29,15 +33,6 @@ export default function Home() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
   
   useEffect(() => {
-    const setChain = async () => {
-      const { chainId } = await signer.provider.getNetwork()
-      if (chainId === 5) {
-        dispatch(setGoerliUserAddress(wallet?.accounts[0].address))
-      }
-      if (chainId === 100) {
-        dispatch(setGnosisUserAddress(wallet?.accounts[0].address))
-      }
-    }
     console.log("account", wallet?.accounts[0])
     if (wallet?.provider) {
       const signer = ethersProvider.getSigner()
@@ -45,10 +40,18 @@ export default function Home() {
       dispatch(setUserAddress(wallet.accounts[0].address))
       dispatch(rootActions.setWeb3Provider(ethersProvider))
       dispatch(rootActions.setReduxSigner(signer))
-      setChain();
       setAccount({
         address: wallet.accounts[0].address,
         balance: wallet.accounts[0].balance
+      })
+      signer.provider.getNetwork().then((response: any)=>{
+        console.log(response.chainId)
+        if (response.chainId === GOERLI_CHAIN) {
+          dispatch(setGoerliUserAddress(wallet?.accounts[0].address))
+        }
+        if (response.chainId === CHIADO_CHAIN) {
+          dispatch(setGnosisUserAddress(wallet?.accounts[0].address))
+        }
       })
     } else {
       dispatch(setUserAddress(""))
@@ -67,14 +70,14 @@ export default function Home() {
       console.log(wallet!.accounts[0].address)
       const { chainId } = await signer.provider.getNetwork()
       console.log("chainId", chainId)
-      if (chainId === 5) {
+      if (chainId === GOERLI_CHAIN) {
         console.log("withdraw from goerli")
-        const plockContractGoerli = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], principallock_abi, signer)
+        const plockContractGoerli = new ethers.Contract(contracts.PRINCIPAL_LOCK[GOERLI_CHAIN], principallock_abi, signer)
         //const plockContractGoerliUser = plockContractGoerli.connect(wallet!.accounts[0].address)
         await plockContractGoerli.withdraw();
       } else {
         console.log("withdraw from gnosis")
-        const plockContractGnosis = new ethers.Contract(contracts.PRINCIPAL_LOCK[100], principallock_abi, signer)
+        const plockContractGnosis = new ethers.Contract(contracts.PRINCIPAL_LOCK[CHIADO_CHAIN], principallock_abi, signer)
         //const plockContractGnosisUser = plockContractGnosis.connect(wallet!.accounts[0].address)
         await plockContractGnosis.withdraw();
       }

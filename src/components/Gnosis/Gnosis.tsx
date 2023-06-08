@@ -12,6 +12,9 @@ import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress, selectGoerliUserAddress } from "../../redux/selectors/user";
 import { setGnosisPrincipalLock } from '../../redux/reducers/user';
 
+const GNOSIS_CHAIN = 100
+const CHIADO_CHAIN = 10200
+
 export default function Gnosis() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const [gnosisPrincipalLockDeployed, setGnosisPrincipalLockDeployed] = useState<boolean>(false);
@@ -25,7 +28,7 @@ export default function Gnosis() {
   const handleGriefingLock = async () => {
     console.log(signer)
     console.log(goerliUserAddress)
-    if (contracts.GRIEFING_LOCK[100] === '') {
+    if (contracts.GRIEFING_LOCK[CHIADO_CHAIN] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(
         griefinglock_abi, griefinglock_bytecode, signer);
@@ -38,7 +41,7 @@ export default function Gnosis() {
       setGlockContractS(glockContract)
     } else {
       console.log("griefing contract is deployed")
-      glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[100], 
+      glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[CHIADO_CHAIN], 
         griefinglock_abi, signer)
       console.log(glockContract.address)
       setGlockContractS(glockContract)
@@ -52,7 +55,7 @@ export default function Gnosis() {
     console.log(glockContractS)
 
     let exchangeAmount = 2
-    if (contracts.PRINCIPAL_LOCK[100] === '') {
+    if (contracts.PRINCIPAL_LOCK[CHIADO_CHAIN] === '') {
       console.log("deploying principal contract")
       const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
       const res = await plockContract.wait()
@@ -61,8 +64,7 @@ export default function Gnosis() {
       console.log(principalLockAddress)
     } else {
       console.log("principal contract is deployed")
-      const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[100], 
-        principallock_abi, signer)
+      const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[CHIADO_CHAIN], principallock_abi, signer)
       console.log(plockContract.address)
       //await plockContract.funding(exchangeAmount);
     }
@@ -75,16 +77,16 @@ export default function Gnosis() {
         console.log(signer.provider)
         const chainId = await signer.provider.getNetwork()
         console.log("chainId", chainId)
-        if (chainId != 100) {
+        if (chainId != CHIADO_CHAIN) {
           try {
             const { ethereum } = window;
             await ethereum.request({
                 method:'wallet_switchEthereumChain',
-                params: [{chainId: "0x64"}]
+                params: [{chainId: "0x27d8"}]
             });
-            console.log(`switched to chainid : 0x64 succesfully`);
+            console.log(`switched to chainid : 0x27d8 succesfully`);
           } catch(err) {
-            console.log(`error occured while switching chain to chainId 100, err: ${err}`);
+            console.log(`error occured while switching chain to chainId 10200, err: ${err}`);
             console.log(err)
           }
         }

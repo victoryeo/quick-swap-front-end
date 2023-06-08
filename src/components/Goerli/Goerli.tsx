@@ -13,6 +13,8 @@ import { selectSigner } from "../../redux/selectors";
 import { selectUserAddress, selectGnosisUserAddress } from "../../redux/selectors/user";
 import { setGoerliPrincipalLock } from '../../redux/reducers/user';
 
+const GOERLI_CHAIN = 5
+
 export default function Goerli() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const [goerliPrincipalLockDeployed, setGoerliPrincipalLockDeployed] = useState<boolean>(false);
@@ -26,7 +28,7 @@ export default function Goerli() {
   const handleGriefingLock = async () => {
     console.log(signer)
     console.log(gnosisUserAddress)
-    if (contracts.GRIEFING_LOCK[5] === '') {
+    if (contracts.GRIEFING_LOCK[GOERLI_CHAIN] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(
         griefinglock_abi, griefinglock_bytecode, signer);
@@ -40,7 +42,7 @@ export default function Goerli() {
       setGlockContractS(glockContract)
     } else {
       console.log("griefing contract is deployed")
-      glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[5], 
+      glockContract = new ethers.Contract(contracts.GRIEFING_LOCK[GOERLI_CHAIN], 
         griefinglock_abi, signer)
       console.log(glockContract.address)
       setGlockContractS(glockContract)
@@ -54,7 +56,7 @@ export default function Goerli() {
     console.log(glockContractS)
 
     let exchangeAmount = 2
-    if (contracts.PRINCIPAL_LOCK[5] === '') {
+    if (contracts.PRINCIPAL_LOCK[GOERLI_CHAIN] === '') {
       console.log("deploying principal contract")
       const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
       const res = await plockContract.wait()
@@ -63,8 +65,7 @@ export default function Goerli() {
       console.log(principalLockAddress)
     } else {
       console.log("principal contract is deployed")
-      const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[5], 
-        principallock_abi, signer)
+      const plockContract = new ethers.Contract(contracts.PRINCIPAL_LOCK[GOERLI_CHAIN], principallock_abi, signer)
       console.log(plockContract.address)
       //await plockContract.funding(exchangeAmount);
     }
@@ -77,7 +78,7 @@ export default function Goerli() {
         console.log(signer.provider)
         const chainId = await signer.provider.getNetwork()
         console.log("chainId", chainId)
-        if (chainId != 5) {
+        if (chainId != GOERLI_CHAIN) {
           try {
             const { ethereum } = window;
             await ethereum.request({
