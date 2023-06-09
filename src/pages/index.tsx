@@ -47,10 +47,10 @@ export default function Home() {
       signer.provider.getNetwork().then((response: any)=>{
         console.log(response.chainId)
         if (response.chainId === GOERLI_CHAIN) {
-          dispatch(setGoerliUserAddress(wallet?.accounts[0].address))
+          dispatch(setGoerliUserAddress(wallet.accounts[0].address))
         }
         if (response.chainId === CHIADO_CHAIN) {
-          dispatch(setGnosisUserAddress(wallet?.accounts[0].address))
+          dispatch(setGnosisUserAddress(wallet.accounts[0].address))
         }
       })
     } else {
