@@ -17,7 +17,6 @@ const GOERLI_CHAIN = 5
 
 export default function Goerli() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
-  const [goerliPrincipalLockDeployed, setGoerliPrincipalLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
   const gnosisUserAddress = useSelector(selectGnosisUserAddress);
@@ -28,6 +27,8 @@ export default function Goerli() {
   const handleGriefingLock = async () => {
     console.log(signer)
     console.log(gnosisUserAddress)
+    console.log(JSON.parse(localStorage.getItem('gnosisUserAddress')));
+    console.log(JSON.parse(localStorage.getItem('goerliUserAddress')));
     if (contracts.GRIEFING_LOCK[GOERLI_CHAIN] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(

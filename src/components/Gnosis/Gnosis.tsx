@@ -9,7 +9,7 @@ import { griefinglock_bytecode } from "@/config/bytecode/GriefingLock";
 import { principallock_abi } from "@/config/abi/PrincipalLock";
 import contracts from '../../config/constants/contracts'
 import { selectSigner } from "../../redux/selectors";
-import { selectUserAddress, selectGoerliUserAddress } from "../../redux/selectors/user";
+import { selectUserAddress, selectGoerliUserAddress, selectGnosisUserAddress } from "../../redux/selectors/user";
 import { setGnosisPrincipalLock } from '../../redux/reducers/user';
 
 const GNOSIS_CHAIN = 100
@@ -17,17 +17,21 @@ const CHIADO_CHAIN = 10200
 
 export default function Gnosis() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
-  const [gnosisPrincipalLockDeployed, setGnosisPrincipalLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
   const goerliUserAddress = useSelector(selectGoerliUserAddress);
+  const gnosisUserAddress = useSelector(selectGnosisUserAddress);
   let glockContract: ethers.Contract;
   const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
   const dispatch = useDispatch()
 
   const handleGriefingLock = async () => {
     console.log(signer)
+    console.log(userAddress)
+    console.log(gnosisUserAddress)
     console.log(goerliUserAddress)
+    console.log(JSON.parse(localStorage.getItem('gnosisUserAddress')));
+    console.log(JSON.parse(localStorage.getItem('goerliUserAddress')));
     if (contracts.GRIEFING_LOCK[CHIADO_CHAIN] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(
