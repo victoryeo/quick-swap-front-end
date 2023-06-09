@@ -19,7 +19,7 @@ export default function Goerli() {
   const [griefingLockDeployed, setGriefingLockDeployed] = useState<boolean>(false);
   const signer = useSelector(selectSigner);
   const userAddress = useSelector(selectUserAddress);
-  const gnosisUserAddress = useSelector(selectGnosisUserAddress);
+  let gnosisUserAddress = useSelector(selectGnosisUserAddress);
   let glockContract: ethers.Contract;
   const [glockContractS, setGlockContractS] = useState<ethers.Contract>();
   const dispatch = useDispatch()
@@ -29,12 +29,28 @@ export default function Goerli() {
     console.log(gnosisUserAddress)
     console.log(JSON.parse(localStorage.getItem('gnosisUserAddress')));
     console.log(JSON.parse(localStorage.getItem('goerliUserAddress')));
+    // get address from backend
+    const res = await fetch("http://localhost:9090/address/", {
+        method: 'GET' })
+    const jsonData = await res.json()
+    // parse data
+    jsonData.map((addressBook:any)=>{
+      console.log(addressBook)
+      if (addressBook.type === 'gnosis') {
+        gnosisUserAddress = addressBook.address
+      }
+    })
+    if (gnosisUserAddress == '' || gnosisUserAddress == undefined) {
+      alert('no gnosis counterparty found')
+    }
     if (contracts.GRIEFING_LOCK[GOERLI_CHAIN] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(
         griefinglock_abi, griefinglock_bytecode, signer);
       let args: any[] = []
-      args[0] = gnosisUserAddress     // quick swap recipient address
+      let newGAddress = gnosisUserAddress.replace(/['"]+/g, '')
+      console.log("gnosisUserAddress", newGAddress)
+      args[0] = newGAddress     // quick swap recipient address
       args[1] = 200             // time gap
       glockContract = await glockContractFactory.deploy(...args);
       await glockContract.deployed();
