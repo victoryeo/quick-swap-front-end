@@ -1,4 +1,4 @@
-module github.com/victoryeo/quick-swap-front-end
+module github.com/victoryeo/quick-swap-front-end/backend
 
 go 1.19
 
