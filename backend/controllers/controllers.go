@@ -27,5 +27,5 @@ func CreateAddress(c *gin.Context) {
 func GetAddress(c *gin.Context) {
 
 	// TODO: order matching
-	c.JSON(http.StatusOK, gin.H{"address": "ok"})
+	c.JSON(http.StatusOK, models.AddressBook)
 }
