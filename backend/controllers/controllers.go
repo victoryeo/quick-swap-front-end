@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,13 +16,16 @@ func CreateAddress(c *gin.Context) {
 		return
 	}
 
+	models.AddressBook = append(models.AddressBook, input)
+
+	log.Printf("%v", models.AddressBook)
 	// TODO: order matching
-	c.JSON(http.StatusOK, gin.H{"data": "ok"})
+	c.JSON(http.StatusOK, gin.H{"result": models.AddressBook})
 }
 
 // GET /address
 func GetAddress(c *gin.Context) {
 
 	// TODO: order matching
-	c.JSON(http.StatusOK, gin.H{"data": "ok"})
+	c.JSON(http.StatusOK, gin.H{"address": "ok"})
 }

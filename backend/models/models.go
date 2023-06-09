@@ -5,4 +5,4 @@ type AddressInput struct {
 	Address string `json:"address" binding:"required"`
 }
 
-var addressBook []AddressInput
+var AddressBook []AddressInput
