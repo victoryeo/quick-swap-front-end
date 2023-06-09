@@ -48,9 +48,49 @@ export default function Home() {
         console.log(response.chainId)
         if (response.chainId === GOERLI_CHAIN) {
           dispatch(setGoerliUserAddress(wallet.accounts[0].address))
+          localStorage.setItem('goerliUserAddress', JSON.stringify(wallet.accounts[0].address));
+          let opts = {
+            type: "goerli",
+            address: JSON.stringify(wallet.accounts[0].address),
+          }
+          fetch("http://localhost:9090/address/", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(opts)
+          }).then((res: any) =>{
+            console.log(res)
+            if (res.status >= 200 && res.status <= 299) {
+              res.json().then((resjson:any)=>console.log(resjson))
+            } else {
+              // Handle errors
+              console.log(res.status, res.statusText);
+            }
+          })
         }
         if (response.chainId === CHIADO_CHAIN) {
           dispatch(setGnosisUserAddress(wallet.accounts[0].address))
+          localStorage.setItem('gnosisUserAddress', JSON.stringify(wallet.accounts[0].address));
+          let opts = {
+            type: "gnosis",
+            address: JSON.stringify(wallet.accounts[0].address),
+          }
+          fetch("http://localhost:9090/address/", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(opts)
+          }).then((res: any) =>{
+            console.log(res)
+            if (res.status >= 200 && res.status <= 299) {
+              res.json().then((resjson:any)=>console.log(resjson))
+            } else {
+              // Handle errors
+              console.log(res.status, res.statusText);
+            }
+          })
         }
       })
     } else {
