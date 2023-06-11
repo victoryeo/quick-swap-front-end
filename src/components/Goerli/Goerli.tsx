@@ -40,7 +40,7 @@ export default function Goerli() {
         gnosisUserAddress = addressBook.address
       }
     })
-    if (gnosisUserAddress == '' || gnosisUserAddress == undefined) {
+    if (gnosisUserAddress == '' || gnosisUserAddress == undefined || gnosisUserAddress.trim().length === 0) {
       alert('no gnosis counterparty found')
     }
     if (contracts.GRIEFING_LOCK[GOERLI_CHAIN] === '') {

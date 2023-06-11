@@ -43,7 +43,7 @@ export default function Gnosis() {
         goerliUserAddress = addressBook.address
       }
     })
-    if (goerliUserAddress == '' || goerliUserAddress == undefined) {
+    if (goerliUserAddress == '' || goerliUserAddress == undefined || goerliUserAddress.trim().length === 0) {
       alert('no goerli counterparty found')
     }
     if (contracts.GRIEFING_LOCK[CHIADO_CHAIN] === '') {
