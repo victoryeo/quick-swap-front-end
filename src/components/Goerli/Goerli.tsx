@@ -34,7 +34,7 @@ export default function Goerli() {
         method: 'GET' })
     const jsonData = await res.json()
     // parse data
-    jsonData.map((addressBook:any)=>{
+    jsonData?.map((addressBook:any)=>{
       console.log(addressBook)
       if (addressBook.type === 'gnosis') {
         gnosisUserAddress = addressBook.address

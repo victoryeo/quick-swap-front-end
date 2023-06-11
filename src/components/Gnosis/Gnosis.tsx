@@ -37,7 +37,7 @@ export default function Gnosis() {
         method: 'GET' })
     const jsonData = await res.json()
     // parse data
-    jsonData.map((addressBook:any)=>{
+    jsonData?.map((addressBook:any)=>{
       console.log(addressBook)
       if (addressBook.type === 'goerli') {
         goerliUserAddress = addressBook.address
