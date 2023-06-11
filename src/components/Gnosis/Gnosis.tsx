@@ -45,7 +45,7 @@ export default function Gnosis() {
     })
     if (goerliUserAddress == '' || goerliUserAddress == undefined || goerliUserAddress.trim().length === 0) {
       alert('no goerli counterparty found')
-    }
+    } else {
     if (contracts.GRIEFING_LOCK[CHIADO_CHAIN] === '') {
       console.log("deploying griefing contract")
       const glockContractFactory = new ethers.ContractFactory(
@@ -65,6 +65,7 @@ export default function Gnosis() {
         griefinglock_abi, signer)
       console.log(glockContract.address)
       setGlockContractS(glockContract)
+    }
     }
     setGriefingLockDeployed(true);
   };
