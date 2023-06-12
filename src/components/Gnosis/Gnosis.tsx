@@ -66,8 +66,8 @@ export default function Gnosis() {
       console.log(glockContract.address)
       setGlockContractS(glockContract)
     }
-    }
     setGriefingLockDeployed(true);
+    }
   };
 
   const handlePrincipalLock = async () => {

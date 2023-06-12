@@ -64,8 +64,8 @@ export default function Goerli() {
       console.log(glockContract.address)
       setGlockContractS(glockContract)
     }
+    setGriefingLockDeployed(true);
     }
-    setGriefingLockDeployed(true);      
   };
 
   const handlePrincipalLock = async () => {
