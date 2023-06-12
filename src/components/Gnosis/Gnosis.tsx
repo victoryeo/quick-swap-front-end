@@ -75,7 +75,9 @@ export default function Gnosis() {
     console.log(userAddress)
     console.log(glockContractS)
 
-    let exchangeAmount = 2
+    const exchangeAmount: string = ethers.utils
+      .parseUnits(''+1, "wei")
+      .toString();
     if (contracts.PRINCIPAL_LOCK[CHIADO_CHAIN] === '') {
       console.log("deploying principal contract")
       const plockContract = await glockContractS!.deployPrincipalLock({value:exchangeAmount})
