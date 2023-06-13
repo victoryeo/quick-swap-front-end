@@ -53,6 +53,7 @@ export default function Home() {
             type: "goerli",
             address: JSON.stringify(wallet.accounts[0].address),
           }
+          // store the goerli user address in backend
           fetch("http://localhost:9090/address/", {
             method: 'POST',
             headers: {
@@ -76,6 +77,7 @@ export default function Home() {
             type: "gnosis",
             address: JSON.stringify(wallet.accounts[0].address),
           }
+          // store the chiado user address in backend
           fetch("http://localhost:9090/address/", {
             method: 'POST',
             headers: {
@@ -104,22 +106,32 @@ export default function Home() {
 
   const handleSwap = async () => {
     console.log(goerliPlock, gnosisPlock)
-    if (goerliPlock && gnosisPlock) {
+    if (1) {
       alert("Swap starts")
       console.log("signer", signer)
       console.log(wallet!.accounts[0].address)
       const { chainId } = await signer.provider.getNetwork()
       console.log("chainId", chainId)
       if (chainId === GOERLI_CHAIN) {
-        console.log("withdraw from goerli")
-        const plockContractGoerli = new ethers.Contract(contracts.PRINCIPAL_LOCK[GOERLI_CHAIN], principallock_abi, signer)
-        //const plockContractGoerliUser = plockContractGoerli.connect(wallet!.accounts[0].address)
-        await plockContractGoerli.withdraw();
+        if (goerliPlock) {
+          console.log("withdraw from goerli")
+          const plockContractGoerli = new ethers.Contract(contracts.PRINCIPAL_LOCK[GOERLI_CHAIN], principallock_abi, signer)
+          //const plockContractGoerliUser = plockContractGoerli.connect(wallet!.accounts[0].address)
+          await plockContractGoerli.withdraw();
+          alert("withdrawal completed")
+        } else {
+          alert("Principal lock not deployed")
+        }
       } else {
-        console.log("withdraw from gnosis")
-        const plockContractGnosis = new ethers.Contract(contracts.PRINCIPAL_LOCK[CHIADO_CHAIN], principallock_abi, signer)
-        //const plockContractGnosisUser = plockContractGnosis.connect(wallet!.accounts[0].address)
-        await plockContractGnosis.withdraw();
+        if (gnosisPlock) {
+          console.log("withdraw from gnosis")
+          const plockContractGnosis = new ethers.Contract(contracts.PRINCIPAL_LOCK[CHIADO_CHAIN], principallock_abi, signer)
+          //const plockContractGnosisUser = plockContractGnosis.connect(wallet!.accounts[0].address)
+          await plockContractGnosis.withdraw();
+          alert("withdrawal completed")
+        } else {
+          alert("Principal lock not deployed")
+        }
       }
     } else {
       alert("You must deploy griefing and principal lock on both chains before swapping assets")    
