@@ -27,7 +27,6 @@ export default function Gnosis() {
 
   const handleGriefingLock = async () => {
     console.log(signer)
-    console.log(userAddress)
     console.log(gnosisUserAddress)
     console.log(goerliUserAddress)
     console.log(JSON.parse(localStorage.getItem('gnosisUserAddress')));
