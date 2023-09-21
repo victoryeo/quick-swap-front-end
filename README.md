@@ -18,4 +18,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 the griefing lock contract deployment is tested on goerli testnet.
 
 ## Backend
-The backend code is in the backend folder
+The backend code is in the backend folder. The backend is for storing the user address of chiado and goerli testnet.
